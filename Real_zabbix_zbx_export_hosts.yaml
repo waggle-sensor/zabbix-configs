@@ -1,0 +1,634 @@
+zabbix_export:
+  version: '6.0'
+  date: '2022-08-24T17:37:17Z'
+  groups:
+    -
+      uuid: 4ef33de905594474b6c9c210733e2dc7
+      name: 'Wild Sage Nodes'
+  hosts:
+    -
+      host: W01B
+      name: W01B
+      templates:
+        -
+          name: '0816 WSN NxAgent template'
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI2 template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      macros:
+        -
+          macro: '{$RPI2SERIAL}'
+          value: 0000e45f012a1f42
+      inventory_mode: DISABLED
+    -
+      host: W01C
+      name: W01C
+      templates:
+        -
+          name: '0816 WSN NxAgent template'
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI2 template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      macros:
+        -
+          macro: '{$RPI2SERIAL}'
+          value: 0000dca632a3069f
+      inventory_mode: DISABLED
+    -
+      host: W01E
+      name: W01E
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W014
+      name: W014
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W015
+      name: W015
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W016
+      name: W016
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W017
+      name: W017
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W018
+      name: W018
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W019
+      name: W019
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W02B
+      name: W02B
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W02C
+      name: W02C
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W02D
+      name: W02D
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W02E
+      name: W02E
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W02F
+      name: W02F
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W021
+      name: W021
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W022
+      name: W022
+      templates:
+        -
+          name: '0816 WSN NxAgent template'
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI2 template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      macros:
+        -
+          macro: '{$RPI2SERIAL}'
+          value: 0000dca632a305be
+      inventory_mode: DISABLED
+    -
+      host: W023
+      name: W023
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W024
+      name: W024
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W026
+      name: W026
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W027
+      name: W027
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W028
+      name: W028
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W029
+      name: W029
+      templates:
+        -
+          name: '0816 WSN NxAgent template'
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W030
+      name: W030
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W039
+      name: W039
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W056
+      name: W056
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W057
+      name: W057
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W059
+      name: W059
+      templates:
+        -
+          name: '0816 WSN NxAgent template'
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W070
+      name: W070
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W08B
+      name: W08B
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W08C
+      name: W08C
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W08D
+      name: W08D
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: W081
+      name: W081
+      templates:
+        -
+          name: '0816 WSN NxCore template'
+        -
+          name: '0816 WSN RPI template'
+        -
+          name: 'WSN Healh Status 0804'
+        -
+          name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED

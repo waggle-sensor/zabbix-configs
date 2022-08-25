@@ -1,0 +1,3094 @@
+zabbix_export:
+  version: '6.0'
+  date: '2022-08-24T17:23:20Z'
+  groups:
+    -
+      uuid: 4ef33de905594474b6c9c210733e2dc7
+      name: 'Wild Sage Nodes'
+  templates:
+    -
+      uuid: cac409dc6ca6437988b06bd51754c994
+      template: '0816 WSN NxAgent template'
+      name: '0816 WSN NxAgent template'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      items:
+        -
+          uuid: 49ff9736f9f5448e9d23ffcff6b66566
+          name: NxAgentData
+          type: EXTERNAL
+          key: 'nxagent.data.sh[{HOST.NAME}]'
+          delay: 2m
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - '}}\n{'
+                - '}},\n{'
+            -
+              type: STR_REPLACE
+              parameters:
+                - '"meta":{'
+                - ''
+            -
+              type: STR_REPLACE
+              parameters:
+                - '}}'
+                - '}'
+          triggers:
+            -
+              uuid: 3014e109f42b4895b1ef94c2e4ea11ac
+              expression: 'bytelength(last(/0816 WSN NxAgent template/nxagent.data.sh[{HOST.NAME}]))<5'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'bytelength(last(/0816 WSN NxAgent template/nxagent.data.sh[{HOST.NAME}]))>=5'
+              name: 'No data for NxAgent'
+              priority: WARNING
+        -
+          uuid: 011ae36643aa48ad963463a2c4e44b09
+          name: 'NxAgent system load1'
+          type: DEPENDENT
+          key: nxagent.sys.load1
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.load1")].value.first()'
+          master_item:
+            key: 'nxagent.data.sh[{HOST.NAME}]'
+        -
+          uuid: f4334768f81a4f5d853caffa23075b9e
+          name: 'NxAgent system load5'
+          type: DEPENDENT
+          key: nxagent.sys.load5
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.load5")].value.first()'
+          master_item:
+            key: 'nxagent.data.sh[{HOST.NAME}]'
+        -
+          uuid: 205bedce79214a0fabf75b589fe3e695
+          name: 'NxAgent system load15'
+          type: DEPENDENT
+          key: nxagent.sys.load15
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.load15")].value.first()'
+          master_item:
+            key: 'nxagent.data.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 56799b08e6d34b73b3c9aa91ad1aaf90
+              expression: 'min(/0816 WSN NxAgent template/nxagent.sys.load15,#5)>15'
+              name: 'NxAgent CPU system load15 is too high'
+              priority: AVERAGE
+        -
+          uuid: f271035279964f3aa3c6d6ded82ef389
+          name: 'NxAgent AO temp'
+          type: DEPENDENT
+          key: NxAgent_temp_AO-therm
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.type =~ "AO-therm")].value.first()'
+          master_item:
+            key: 'nxagent.data.sh[{HOST.NAME}]'
+        -
+          uuid: 5b4049ad219e4db9879ae88ba3390e7b
+          name: 'NxAgent AUX temp'
+          type: DEPENDENT
+          key: NxAgent_temp_AUX-therm
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.type =~ "AUX-therm")].value.first()'
+          master_item:
+            key: 'nxagent.data.sh[{HOST.NAME}]'
+        -
+          uuid: 9622b73cc48d424e8c36ec14e8514c1f
+          name: 'NxAgent  CPU temp'
+          type: DEPENDENT
+          key: NxAgent_temp_CPU-therm
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.type =~ "CPU-therm")].value.first()'
+          master_item:
+            key: 'nxagent.data.sh[{HOST.NAME}]'
+        -
+          uuid: 62a8c3d4ff8c419aa06a2a17b82fdc9f
+          name: 'NxAgent  GPU temp'
+          type: DEPENDENT
+          key: NxAgent_temp_GPU-therm
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.type =~ "GPU-therm")].value.first()'
+          master_item:
+            key: 'nxagent.data.sh[{HOST.NAME}]'
+        -
+          uuid: 1504139681d34f4c97ccfc6d880dfa66
+          name: 'NxAgent  NVME temp'
+          type: DEPENDENT
+          key: NxAgent_temp_NVME-therm
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.type =~ "nvme-therm")].value.first()'
+          master_item:
+            key: 'nxagent.data.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 0f0648e4b85147f287c1b66f29e95e06
+              expression: 'last(/0816 WSN NxAgent template/NxAgent_temp_NVME-therm)>85'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/0816 WSN NxAgent template/NxAgent_temp_NVME-therm)<82'
+              name: 'NxAgent NVME temp is too high'
+              priority: AVERAGE
+        -
+          uuid: 539ad0c5a57a45638deab48b8c35c0db
+          name: 'NxAgent  Fan Est temp'
+          type: DEPENDENT
+          key: NxAgent_temp_thermal-fan-est
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.type =~ "thermal-fan-est")].value.first()'
+          master_item:
+            key: 'nxagent.data.sh[{HOST.NAME}]'
+        -
+          uuid: a5615a2b9b3742aebe98039aa25bae19
+          name: 'NxAgent uptime'
+          type: DEPENDENT
+          key: NxAgent_uptime
+          delay: '0'
+          value_type: FLOAT
+          units: sec
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.uptime")].value.first()'
+          master_item:
+            key: 'nxagent.data.sh[{HOST.NAME}]'
+        -
+          uuid: 2ae8039193164993acbd01969516591b
+          name: 'Nxagent uptime delta'
+          type: DEPENDENT
+          key: NxAgent_uptime_delta
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.uptime")].value.first()'
+            -
+              type: SIMPLE_CHANGE
+              parameters:
+                - ''
+          master_item:
+            key: 'nxagent.data.sh[{HOST.NAME}]'
+      dashboards:
+        -
+          uuid: 990512a0052640bb9f43120c069b05ee
+          name: NxAgent
+          display_period: '120'
+          pages:
+            -
+              widgets:
+                -
+                  type: GRAPH_CLASSIC
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN NxAgent template'
+                        name: 'Nxagent uptime delta'
+                -
+                  type: GRAPH_CLASSIC
+                  x: '12'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN NxAgent template'
+                        name: 'NxAgent uptime'
+                -
+                  type: GRAPH_CLASSIC
+                  'y': '5'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN NxAgent template'
+                        name: 'NxAgent system loads'
+                -
+                  type: GRAPH_CLASSIC
+                  x: '12'
+                  'y': '5'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN NxAgent template'
+                        name: 'NxAgent all temps'
+                -
+                  type: GRAPH_CLASSIC
+                  'y': '10'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN NxAgent template'
+                        name: 'NxAgent NVME temp'
+                -
+                  type: GRAPH_CLASSIC
+                  x: '12'
+                  'y': '10'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN NxAgent template'
+                        name: 'NxAgent temps'
+    -
+      uuid: 03fd2884796944998535fc0262a5101a
+      template: '0816 WSN NxCore template'
+      name: '0816 WSN NxCore template'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      items:
+        -
+          uuid: 920abc4cc79f47efb5c4840544b045ef
+          name: NxCoreData
+          type: EXTERNAL
+          key: 'nxcore.data.sh[{HOST.NAME}]'
+          delay: 2m
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - '}}\n{'
+                - '}},\n{'
+            -
+              type: STR_REPLACE
+              parameters:
+                - '"meta":{'
+                - ''
+            -
+              type: STR_REPLACE
+              parameters:
+                - '}}'
+                - '}'
+          triggers:
+            -
+              uuid: 58d70a327d2b4fd59be6ec662e28a96e
+              expression: 'bytelength(last(/0816 WSN NxCore template/nxcore.data.sh[{HOST.NAME}]))<5'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'bytelength(last(/0816 WSN NxCore template/nxcore.data.sh[{HOST.NAME}]))>=5'
+              name: 'NxCore is down'
+              priority: WARNING
+        -
+          uuid: 73495e7d386a43c6a6dbd454f66c2612
+          name: 'NxCore system load1'
+          type: DEPENDENT
+          key: nxcore.sys.load1
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.load1")].value.first()'
+          master_item:
+            key: 'nxcore.data.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: bc0e111b75a2419b820a0dcbdc528db2
+              expression: 'nodata(/0816 WSN NxCore template/nxcore.sys.load1,600)=1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/0816 WSN NxCore template/nxcore.sys.load1,600)=0'
+              name: 'No data for NXCore system load1'
+              priority: WARNING
+              dependencies:
+                -
+                  name: 'NxCore is down'
+                  expression: 'bytelength(last(/0816 WSN NxCore template/nxcore.data.sh[{HOST.NAME}]))<5'
+                  recovery_expression: 'bytelength(last(/0816 WSN NxCore template/nxcore.data.sh[{HOST.NAME}]))>=5'
+        -
+          uuid: a05af2fe33e84cf5a25e57cd99e78376
+          name: 'NxCore system load5'
+          type: DEPENDENT
+          key: nxcore.sys.load5
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.load5")].value.first()'
+          master_item:
+            key: 'nxcore.data.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: e7e29d6b7626484eb9c8508cfa52ba22
+              expression: 'nodata(/0816 WSN NxCore template/nxcore.sys.load5,600)=1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/0816 WSN NxCore template/nxcore.sys.load5,600)=0'
+              name: 'No data for NXCore system load5'
+              priority: WARNING
+              dependencies:
+                -
+                  name: 'NxCore is down'
+                  expression: 'bytelength(last(/0816 WSN NxCore template/nxcore.data.sh[{HOST.NAME}]))<5'
+                  recovery_expression: 'bytelength(last(/0816 WSN NxCore template/nxcore.data.sh[{HOST.NAME}]))>=5'
+        -
+          uuid: ea7f2247f0fb468d805aa8acee4397c6
+          name: 'NxCore system load15'
+          type: DEPENDENT
+          key: nxcore.sys.load15
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.load15")].value.first()'
+          master_item:
+            key: 'nxcore.data.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 6e4f5f863ebd45b89654a18a8b6c5264
+              expression: 'nodata(/0816 WSN NxCore template/nxcore.sys.load15,600)=1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/0816 WSN NxCore template/nxcore.sys.load15,600)=0'
+              name: 'No data for NXCore system load15'
+              priority: WARNING
+              dependencies:
+                -
+                  name: 'NxCore is down'
+                  expression: 'bytelength(last(/0816 WSN NxCore template/nxcore.data.sh[{HOST.NAME}]))<5'
+                  recovery_expression: 'bytelength(last(/0816 WSN NxCore template/nxcore.data.sh[{HOST.NAME}]))>=5'
+            -
+              uuid: 8459f681de234dd9b966dc2ce5538565
+              expression: 'min(/0816 WSN NxCore template/nxcore.sys.load15,#5)>15'
+              name: 'NxCore CPU system load15 is too high'
+              priority: AVERAGE
+        -
+          uuid: 7e31ba32e69e4099871f90871924b640
+          name: 'NxCore AO temp'
+          type: DEPENDENT
+          key: NxCore_temp_AO-therm
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.type =~ "AO-therm")].value.first()'
+          master_item:
+            key: 'nxcore.data.sh[{HOST.NAME}]'
+        -
+          uuid: 1937aaeb6f6f4b3db7f10da234846e2b
+          name: 'NxCore AUX temp'
+          type: DEPENDENT
+          key: NxCore_temp_AUX-therm
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.type =~ "AUX-therm")].value.first()'
+          master_item:
+            key: 'nxcore.data.sh[{HOST.NAME}]'
+        -
+          uuid: 3b4865f34aa2416a90dba8eae2f516ac
+          name: 'NxCore CPU temp'
+          type: DEPENDENT
+          key: NxCore_temp_CPU-therm
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.type =~ "CPU-therm")].value.first()'
+          master_item:
+            key: 'nxcore.data.sh[{HOST.NAME}]'
+        -
+          uuid: a8f554afe4be459e812000a8b1453574
+          name: 'NxCore GPU temp'
+          type: DEPENDENT
+          key: NxCore_temp_GPU-therm
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.type =~ "GPU-therm")].value.first()'
+          master_item:
+            key: 'nxcore.data.sh[{HOST.NAME}]'
+        -
+          uuid: 3642913917344f17a0f3e6f4a81deeba
+          name: 'NxCore NVME temp'
+          type: DEPENDENT
+          key: NxCore_temp_nvme-therm
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.type =~ "nvme-therm")].value.first()'
+          master_item:
+            key: 'nxcore.data.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 1ddef688bb6742518fad4cc10711558d
+              expression: 'nodata(/0816 WSN NxCore template/NxCore_temp_nvme-therm,600)=1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/0816 WSN NxCore template/NxCore_temp_nvme-therm,600)=0'
+              name: 'No data for NXCore NVME temp'
+              priority: WARNING
+              dependencies:
+                -
+                  name: 'NxCore is down'
+                  expression: 'bytelength(last(/0816 WSN NxCore template/nxcore.data.sh[{HOST.NAME}]))<5'
+                  recovery_expression: 'bytelength(last(/0816 WSN NxCore template/nxcore.data.sh[{HOST.NAME}]))>=5'
+            -
+              uuid: 35a3893fe8f642ca854ee2bf62123cf5
+              expression: 'last(/0816 WSN NxCore template/NxCore_temp_nvme-therm)>85'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/0816 WSN NxCore template/NxCore_temp_nvme-therm)<82'
+              name: 'NxCore NVME temp is too high'
+              priority: AVERAGE
+        -
+          uuid: 2bc3c07589cf4f8ebffc3c0da7d45eb4
+          name: 'NxCore Fan Est temp'
+          type: DEPENDENT
+          key: NxCore_temp_thermal-fan-est
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.type =~ "thermal-fan-est")].value.first()'
+          master_item:
+            key: 'nxcore.data.sh[{HOST.NAME}]'
+        -
+          uuid: 3cc60bc606ea4e8793e96e9b45ad6530
+          name: 'NxCore uptime'
+          type: DEPENDENT
+          key: NxCore_uptime
+          delay: '0'
+          value_type: FLOAT
+          units: sec
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.uptime")].value.first()'
+          master_item:
+            key: 'nxcore.data.sh[{HOST.NAME}]'
+        -
+          uuid: b26c7bb45fb04ae8a362f953d1523a4a
+          name: 'NxCore uptime delta'
+          type: DEPENDENT
+          key: NxCore_uptime_delta
+          delay: '0'
+          value_type: FLOAT
+          units: sec
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.uptime")].value.first()'
+            -
+              type: SIMPLE_CHANGE
+              parameters:
+                - ''
+          master_item:
+            key: 'nxcore.data.sh[{HOST.NAME}]'
+      dashboards:
+        -
+          uuid: ce9bc8eea48c46b19c4cf07908062fed
+          name: NxCore
+          display_period: '120'
+          pages:
+            -
+              widgets:
+                -
+                  type: GRAPH_CLASSIC
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN NxCore template'
+                        name: 'NxCore uptime delta'
+                -
+                  type: GRAPH_CLASSIC
+                  x: '12'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN NxCore template'
+                        name: 'NxCore uptime'
+                -
+                  type: GRAPH_CLASSIC
+                  'y': '5'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN NxCore template'
+                        name: 'NxCore system loads'
+                -
+                  type: GRAPH_CLASSIC
+                  'y': '10'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN NxCore template'
+                        name: 'NxCore NVME temp'
+                -
+                  type: GRAPH_CLASSIC
+                  x: '12'
+                  'y': '10'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN NxCore template'
+                        name: 'NxCore temps'
+                -
+                  type: GRAPH_CLASSIC
+                  x: '12'
+                  'y': '5'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN NxCore template'
+                        name: 'NxCore all temps'
+    -
+      uuid: cee91dc664f04e3b81bec693ade3a76b
+      template: '0816 WSN RPI2 template'
+      name: '0816 WSN RPI2 template'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      items:
+        -
+          uuid: 8135a1fc4c6d43458830c9d43ecae36d
+          name: RPI2Data
+          type: EXTERNAL
+          key: 'rpi2.data.sh[{HOST.NAME},{$RPI2SERIAL}]'
+          delay: 2m
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - '}}\n{'
+                - '}},\n{'
+            -
+              type: STR_REPLACE
+              parameters:
+                - '"meta":{'
+                - ''
+            -
+              type: STR_REPLACE
+              parameters:
+                - '}}'
+                - '}'
+          triggers:
+            -
+              uuid: 738b09fbb15b47beb8c289a3ed361a06
+              expression: 'bytelength(last(/0816 WSN RPI2 template/rpi2.data.sh[{HOST.NAME},{$RPI2SERIAL}]))<5'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'bytelength(last(/0816 WSN RPI2 template/rpi2.data.sh[{HOST.NAME},{$RPI2SERIAL}]))>=5'
+              name: 'No RPI2 Data'
+              priority: WARNING
+              description: 'bytelength(last(/0816 WSN RPI2 template/rpi2.data.sh[{HOST.NAME},{$RPI2SERIAL}]))5'
+        -
+          uuid: 24ed823c95694d4eb820389ffb35d1f6
+          name: 'RPI2 CPU temp'
+          type: DEPENDENT
+          key: RPI2_CPU_temp
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.thermal")].value.first()'
+          master_item:
+            key: 'rpi2.data.sh[{HOST.NAME},{$RPI2SERIAL}]'
+          triggers:
+            -
+              uuid: f6591830d0b54850aed1356a9c3510d2
+              expression: 'nodata(/0816 WSN RPI2 template/RPI2_CPU_temp,600)=1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/0816 WSN RPI2 template/RPI2_CPU_temp,600)=0'
+              name: 'No data for RPI2 CPU temp'
+              dependencies:
+                -
+                  name: 'No RPI2 Data'
+                  expression: 'bytelength(last(/0816 WSN RPI2 template/rpi2.data.sh[{HOST.NAME},{$RPI2SERIAL}]))<5'
+                  recovery_expression: 'bytelength(last(/0816 WSN RPI2 template/rpi2.data.sh[{HOST.NAME},{$RPI2SERIAL}]))>=5'
+            -
+              uuid: 08d73e3765954bcc8f004a47bd7d4a3d
+              expression: 'last(/0816 WSN RPI2 template/RPI2_CPU_temp)>80'
+              name: 'RPI2 CPU temp is too high'
+        -
+          uuid: 80b08598979e4b98b05f4daefb74a7e7
+          name: 'RPI2 system load1'
+          type: DEPENDENT
+          key: RPI2_system_load1
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.load1")].value.first()'
+          master_item:
+            key: 'rpi2.data.sh[{HOST.NAME},{$RPI2SERIAL}]'
+        -
+          uuid: 5df52d1171b349a085e5e0c8e7ac8658
+          name: 'RPI2 system load5'
+          type: DEPENDENT
+          key: RPI2_system_load5
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.load5")].value.first()'
+          master_item:
+            key: 'rpi2.data.sh[{HOST.NAME},{$RPI2SERIAL}]'
+        -
+          uuid: 63efb3bd10004aceb0085da6b73bbbbe
+          name: 'RPI2 system load15'
+          type: DEPENDENT
+          key: RPI2_system_load15
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.load15")].value.first()'
+          master_item:
+            key: 'rpi2.data.sh[{HOST.NAME},{$RPI2SERIAL}]'
+          triggers:
+            -
+              uuid: 257aaddba75f4053b7dc20bcf5f3dab3
+              expression: 'min(/0816 WSN RPI2 template/RPI2_system_load15,#5)>15'
+              name: 'RPI2 CPU system load15 is too high'
+              priority: AVERAGE
+        -
+          uuid: 036c17e637c540309e6f71b2b10dfef6
+          name: 'RPI2 uptime'
+          type: DEPENDENT
+          key: RPI2_uptime
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.uptime")].value.first()'
+          master_item:
+            key: 'rpi2.data.sh[{HOST.NAME},{$RPI2SERIAL}]'
+        -
+          uuid: 3b876b20a1244889be1736504ce251fd
+          name: 'RPI2 uptime delta'
+          type: DEPENDENT
+          key: RPI2_uptime_delta
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.uptime")].value.first()'
+            -
+              type: SIMPLE_CHANGE
+              parameters:
+                - ''
+          master_item:
+            key: 'rpi2.data.sh[{HOST.NAME},{$RPI2SERIAL}]'
+      dashboards:
+        -
+          uuid: 9b1bfbf6583d46f899b878b29a518d63
+          name: RPI2
+          display_period: '120'
+          pages:
+            -
+              widgets:
+                -
+                  type: GRAPH_CLASSIC
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN RPI2 template'
+                        name: 'RPI2 uptime delta'
+                -
+                  type: GRAPH_CLASSIC
+                  x: '12'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN RPI2 template'
+                        name: 'RPI2 uptime'
+                -
+                  type: GRAPH_CLASSIC
+                  'y': '5'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN RPI2 template'
+                        name: 'RPI2 system loads'
+                -
+                  type: GRAPH_CLASSIC
+                  x: '12'
+                  'y': '5'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN RPI2 template'
+                        name: 'PRI2 cpu temp'
+    -
+      uuid: cb9a3e8d1a27407f85e7ff02c2026ff2
+      template: '0816 WSN RPI template'
+      name: '0816 WSN RPI template'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      items:
+        -
+          uuid: aafd70b310074e0db15d7ad9e0f2d9fc
+          name: RPIData
+          type: EXTERNAL
+          key: 'rpi.data.sh[{HOST.NAME}]'
+          delay: 2m
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - '}}\n{'
+                - '}},\n{'
+            -
+              type: STR_REPLACE
+              parameters:
+                - '"meta":{'
+                - ''
+            -
+              type: STR_REPLACE
+              parameters:
+                - '}}'
+                - '}'
+          triggers:
+            -
+              uuid: 0bb3b5fe93a0471db611418f195325bb
+              expression: 'bytelength(last(/0816 WSN RPI template/rpi.data.sh[{HOST.NAME}]))<5'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'bytelength(last(/0816 WSN RPI template/rpi.data.sh[{HOST.NAME}]))>=5'
+              name: 'No RPI Data'
+              priority: WARNING
+        -
+          uuid: d795c8af897b48a8b082eb3bc29e7207
+          name: 'RPI CPU temp'
+          type: DEPENDENT
+          key: RPI_CPU_temp
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.thermal")].value.first()'
+          master_item:
+            key: 'rpi.data.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 1a7174b08b9b4bf2addcd705cbeaf5ea
+              expression: 'nodata(/0816 WSN RPI template/RPI_CPU_temp,600)=1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/0816 WSN RPI template/RPI_CPU_temp,600)=0'
+              name: 'No data RPI CPU temp'
+              priority: WARNING
+              dependencies:
+                -
+                  name: 'No RPI Data'
+                  expression: 'bytelength(last(/0816 WSN RPI template/rpi.data.sh[{HOST.NAME}]))<5'
+                  recovery_expression: 'bytelength(last(/0816 WSN RPI template/rpi.data.sh[{HOST.NAME}]))>=5'
+            -
+              uuid: be24449b23d04a42bde5fe24dc6ac275
+              expression: 'last(/0816 WSN RPI template/RPI_CPU_temp)>80'
+              name: 'RPI CPU temp is too high'
+              priority: AVERAGE
+        -
+          uuid: fedcabd2263d4bd28b785ce757195af1
+          name: 'RPI system load1'
+          type: DEPENDENT
+          key: RPI_system_load1
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.load1")].value.first()'
+          master_item:
+            key: 'rpi.data.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 49aa66eaa66c46d7b1badc4668bd471f
+              expression: 'nodata(/0816 WSN RPI template/RPI_system_load1,600)=1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/0816 WSN RPI template/RPI_system_load1,600)=0'
+              name: 'No data RPI system load1'
+              priority: WARNING
+              dependencies:
+                -
+                  name: 'No RPI Data'
+                  expression: 'bytelength(last(/0816 WSN RPI template/rpi.data.sh[{HOST.NAME}]))<5'
+                  recovery_expression: 'bytelength(last(/0816 WSN RPI template/rpi.data.sh[{HOST.NAME}]))>=5'
+        -
+          uuid: f7b074e0696c4d6da9728dd6a50c1865
+          name: 'RPI system load5'
+          type: DEPENDENT
+          key: RPI_system_load5
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.load5")].value.first()'
+          master_item:
+            key: 'rpi.data.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 445a5bc215a840a281d7da211da34528
+              expression: 'nodata(/0816 WSN RPI template/RPI_system_load5,600)=1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/0816 WSN RPI template/RPI_system_load5,600)=0'
+              name: 'No data RPI system load5'
+              priority: WARNING
+              dependencies:
+                -
+                  name: 'No RPI Data'
+                  expression: 'bytelength(last(/0816 WSN RPI template/rpi.data.sh[{HOST.NAME}]))<5'
+                  recovery_expression: 'bytelength(last(/0816 WSN RPI template/rpi.data.sh[{HOST.NAME}]))>=5'
+        -
+          uuid: f3282abc6791421ba08c98e1d6165178
+          name: 'RPI system load15'
+          type: DEPENDENT
+          key: RPI_system_load15
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.load15")].value.first()'
+          master_item:
+            key: 'rpi.data.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: f2367200c0e243c9bf3de0c62c2a74a6
+              expression: 'nodata(/0816 WSN RPI template/RPI_system_load15,600)=1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/0816 WSN RPI template/RPI_system_load15,600)=0'
+              name: 'No data RPI system load15'
+              priority: WARNING
+              dependencies:
+                -
+                  name: 'No RPI Data'
+                  expression: 'bytelength(last(/0816 WSN RPI template/rpi.data.sh[{HOST.NAME}]))<5'
+                  recovery_expression: 'bytelength(last(/0816 WSN RPI template/rpi.data.sh[{HOST.NAME}]))>=5'
+            -
+              uuid: 450c810b937a405c81f0f8b152ed8b6f
+              expression: 'min(/0816 WSN RPI template/RPI_system_load15,#5)>15'
+              name: 'RPI CPU system load15 is too high'
+              priority: AVERAGE
+        -
+          uuid: 72099751b94248988d9b5e565ede8ebd
+          name: 'RPI uptime'
+          type: DEPENDENT
+          key: RPI_uptime
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.uptime")].value.first()'
+          master_item:
+            key: 'rpi.data.sh[{HOST.NAME}]'
+        -
+          uuid: b7eaf47f6d364d509334df1630111fb9
+          name: 'RPI uptime delta'
+          type: DEPENDENT
+          key: RPI_uptime_delta
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name == "sys.uptime")].value.first()'
+            -
+              type: SIMPLE_CHANGE
+              parameters:
+                - ''
+          master_item:
+            key: 'rpi.data.sh[{HOST.NAME}]'
+      dashboards:
+        -
+          uuid: 0fa3041d553648bd9880d90282495661
+          name: RPI
+          display_period: '120'
+          pages:
+            -
+              widgets:
+                -
+                  type: GRAPH_CLASSIC
+                  x: '12'
+                  'y': '5'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN RPI template'
+                        name: 'PRI cpu temp'
+                -
+                  type: GRAPH_CLASSIC
+                  'y': '5'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN RPI template'
+                        name: 'RPI system loads'
+                -
+                  type: GRAPH_CLASSIC
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN RPI template'
+                        name: 'RPI uptime delta'
+                -
+                  type: GRAPH_CLASSIC
+                  x: '12'
+                  width: '12'
+                  height: '5'
+                  fields:
+                    -
+                      type: GRAPH
+                      name: graphid
+                      value:
+                        host: '0816 WSN RPI template'
+                        name: 'RPI uptime'
+    -
+      uuid: 1189650f2e734e6da534a4a86cb2131e
+      template: 'WSN Healh Status 0804'
+      name: 'WSN Healh Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      items:
+        -
+          uuid: 9d9e59fdb94a4574938d3fe3e946f393
+          name: bme280
+          type: DEPENDENT
+          key: bme280_status
+          delay: '0'
+          valuemap:
+            name: Health
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.device =~ "bme280")].value.first()'
+          master_item:
+            key: 'health.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 76c7047d4d5e49c1b1adfa0fd89fd8a5
+              expression: 'last(/WSN Healh Status 0804/bme280_status)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Healh Status 0804/bme280_status)=1'
+              name: 'Health bme280 issue'
+              priority: INFO
+        -
+          uuid: 76d8f575f0a242729f75b0c31af390f6
+          name: bme680
+          type: DEPENDENT
+          key: bme680_status
+          delay: '0'
+          valuemap:
+            name: Health
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.device =~ "bme680")].value.first()'
+          master_item:
+            key: 'health.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: c53c5f7f2e884d1787a0391d384bb097
+              expression: 'last(/WSN Healh Status 0804/bme680_status)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Healh Status 0804/bme680_status)=1'
+              name: 'Health bme680 issue'
+              priority: INFO
+        -
+          uuid: bb04a78bc88545678156e0b9f6727791
+          name: bottom_camera
+          type: DEPENDENT
+          key: bottom_camera_status
+          delay: '0'
+          valuemap:
+            name: Health
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.device =~ "bottom_camera")].value.first()'
+          master_item:
+            key: 'health.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: a2960c41d4d549b7b3a6f4d08810f457
+              expression: 'last(/WSN Healh Status 0804/bottom_camera_status)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Healh Status 0804/bottom_camera_status)=1'
+              name: 'Health bottom_camera issue'
+              priority: INFO
+        -
+          uuid: 6067eefacb7a4cca9c21bad9574c3854
+          name: Health
+          type: EXTERNAL
+          key: 'health.check.sh[{HOST.NAME}]'
+          delay: 1h
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - '}}\n{'
+                - '}},\n{'
+            -
+              type: STR_REPLACE
+              parameters:
+                - '"meta":{'
+                - ''
+            -
+              type: STR_REPLACE
+              parameters:
+                - '}}'
+                - '}'
+        -
+          uuid: 3c5f4e48724b42ca8191294f285451fe
+          name: left_camera
+          type: DEPENDENT
+          key: left_camera_status
+          delay: '0'
+          valuemap:
+            name: Health
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.device =~ "left_camera")].value.first()'
+          master_item:
+            key: 'health.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 8b78bdfed2d0497d93aca2dfd8cd4c68
+              expression: 'last(/WSN Healh Status 0804/left_camera_status)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Healh Status 0804/left_camera_status)=1'
+              name: 'Health left_camera issue'
+              priority: INFO
+        -
+          uuid: 36ccafbde4aa4bb79692e5e8aa02fc16
+          name: microphone
+          type: DEPENDENT
+          key: microphone_status
+          delay: '0'
+          valuemap:
+            name: Health
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.device =~ "microphone")].value.first()'
+          master_item:
+            key: 'health.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: a38ec79f244843b2ac86a51ce14c529e
+              expression: 'last(/WSN Healh Status 0804/microphone_status)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Healh Status 0804/microphone_status)=1'
+              name: 'Health microphone issue'
+              priority: INFO
+        -
+          uuid: 5e6160419cd84302a5c236d4cc727f28
+          name: nxagent
+          type: DEPENDENT
+          key: nxagent_status
+          delay: '0'
+          valuemap:
+            name: Health
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.device =~ "nxagent")].value.first()'
+          master_item:
+            key: 'health.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 888cd5a220bf46889e2ca5d1dde5463e
+              expression: 'last(/WSN Healh Status 0804/nxagent_status)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Healh Status 0804/nxagent_status)=1'
+              name: 'Health nxagent issue'
+              priority: HIGH
+        -
+          uuid: a26be04cc60143e4823fa7a24ce940d4
+          name: nxcore
+          type: DEPENDENT
+          key: nxcore_status
+          delay: '0'
+          valuemap:
+            name: Health
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.device =~ "nxcore")].value.first()'
+          master_item:
+            key: 'health.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 8bddc76754a245908d4e7a3c3d2e427d
+              expression: 'last(/WSN Healh Status 0804/nxcore_status)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Healh Status 0804/nxcore_status)=1'
+              name: 'Health nxcore issue'
+              priority: HIGH
+        -
+          uuid: 08ea88ab819b48d9b5d1b6a676f2f26b
+          name: raingauge
+          type: DEPENDENT
+          key: raingauge_status
+          delay: '0'
+          valuemap:
+            name: Health
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.device =~ "raingauge")].value.first()'
+          master_item:
+            key: 'health.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: bd4b192e13084e2584dde96e1586b430
+              expression: 'last(/WSN Healh Status 0804/raingauge_status)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Healh Status 0804/raingauge_status)=1'
+              name: 'Health raingauge issue'
+              priority: INFO
+        -
+          uuid: 4312df78f7ae4a239ab3c381668f6a2c
+          name: right_camera
+          type: DEPENDENT
+          key: right_camera_status
+          delay: '0'
+          valuemap:
+            name: Health
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.device =~ "right_camera")].value.first()'
+          master_item:
+            key: 'health.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 1b5bfb0d6c9146b69c17189f03e49877
+              expression: 'last(/WSN Healh Status 0804/right_camera_status)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Healh Status 0804/right_camera_status)=1'
+              name: 'Health right_camera issue'
+              priority: INFO
+        -
+          uuid: 8c3b1b227491420b9015972723af1239
+          name: rpi
+          type: DEPENDENT
+          key: rpi_status
+          delay: '0'
+          valuemap:
+            name: Health
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.device =~ "rpi")].value.first()'
+          master_item:
+            key: 'health.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: ad5fc04477504395bd163e5c8dc96704
+              expression: 'last(/WSN Healh Status 0804/rpi_status)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Healh Status 0804/rpi_status)=1'
+              name: 'Health rpi issue'
+              priority: HIGH
+        -
+          uuid: 0aaea9dc39a840889293e814d7761ae9
+          name: top_camera
+          type: DEPENDENT
+          key: top_camera_status
+          delay: '0'
+          valuemap:
+            name: Health
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.device =~ "top_camera")].value.first()'
+          master_item:
+            key: 'health.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 2e9a41cea38244c1863aacd4757d2ba6
+              expression: 'last(/WSN Healh Status 0804/top_camera_status)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Healh Status 0804/top_camera_status)=1'
+              name: 'Health top_camera issue'
+              priority: INFO
+      dashboards:
+        -
+          uuid: ad4aae8ef1714f808a016da15618dee4
+          name: Health_status
+          display_period: '3600'
+          pages:
+            -
+              widgets:
+                -
+                  type: ITEM
+                  name: bme280
+                  width: '4'
+                  height: '3'
+                  fields:
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '2'
+                    -
+                      type: ITEM
+                      name: itemid
+                      value:
+                        host: 'WSN Healh Status 0804'
+                        key: bme280_status
+                -
+                  type: ITEM
+                  name: bme680
+                  'y': '3'
+                  width: '4'
+                  height: '3'
+                  fields:
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '2'
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '4'
+                    -
+                      type: ITEM
+                      name: itemid
+                      value:
+                        host: 'WSN Healh Status 0804'
+                        key: bme680_status
+                -
+                  type: ITEM
+                  name: bottom_camera
+                  x: '16'
+                  width: '4'
+                  height: '3'
+                  fields:
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '2'
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '4'
+                    -
+                      type: ITEM
+                      name: itemid
+                      value:
+                        host: 'WSN Healh Status 0804'
+                        key: bottom_camera_status
+                -
+                  type: ITEM
+                  name: left_camera
+                  x: '4'
+                  width: '4'
+                  height: '3'
+                  fields:
+                    -
+                      type: ITEM
+                      name: itemid
+                      value:
+                        host: 'WSN Healh Status 0804'
+                        key: left_camera_status
+                -
+                  type: ITEM
+                  name: microphone
+                  x: '12'
+                  'y': '3'
+                  width: '4'
+                  height: '3'
+                  fields:
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '2'
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '4'
+                    -
+                      type: ITEM
+                      name: itemid
+                      value:
+                        host: 'WSN Healh Status 0804'
+                        key: microphone_status
+                -
+                  type: ITEM
+                  name: nxagent
+                  x: '4'
+                  'y': '6'
+                  width: '4'
+                  height: '3'
+                  fields:
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '2'
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '4'
+                    -
+                      type: ITEM
+                      name: itemid
+                      value:
+                        host: 'WSN Healh Status 0804'
+                        key: nxagent_status
+                -
+                  type: ITEM
+                  name: nxcore
+                  'y': '6'
+                  width: '4'
+                  height: '3'
+                  fields:
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '2'
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '4'
+                    -
+                      type: ITEM
+                      name: itemid
+                      value:
+                        host: 'WSN Healh Status 0804'
+                        key: nxcore_status
+                -
+                  type: ITEM
+                  name: raingauge
+                  x: '8'
+                  'y': '3'
+                  width: '4'
+                  height: '3'
+                  fields:
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '2'
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '4'
+                    -
+                      type: ITEM
+                      name: itemid
+                      value:
+                        host: 'WSN Healh Status 0804'
+                        key: raingauge_status
+                -
+                  type: ITEM
+                  name: right_camera
+                  x: '8'
+                  width: '4'
+                  height: '3'
+                  fields:
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '2'
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '4'
+                    -
+                      type: ITEM
+                      name: itemid
+                      value:
+                        host: 'WSN Healh Status 0804'
+                        key: right_camera_status
+                -
+                  type: ITEM
+                  name: rpi
+                  x: '4'
+                  'y': '3'
+                  width: '4'
+                  height: '3'
+                  fields:
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '2'
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '4'
+                    -
+                      type: ITEM
+                      name: itemid
+                      value:
+                        host: 'WSN Healh Status 0804'
+                        key: rpi_status
+                -
+                  type: ITEM
+                  name: top_camera
+                  x: '12'
+                  width: '4'
+                  height: '3'
+                  fields:
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '2'
+                    -
+                      type: INTEGER
+                      name: show
+                      value: '4'
+                    -
+                      type: ITEM
+                      name: itemid
+                      value:
+                        host: 'WSN Healh Status 0804'
+                        key: top_camera_status
+      valuemaps:
+        -
+          uuid: bf29729774904b7aa5d2b4d972473719
+          name: Health
+          mappings:
+            -
+              value: '1'
+              newvalue: Ok
+            -
+              value: '0'
+              newvalue: Problem
+    -
+      uuid: 1ad80e4b83f4486ab4f622382cfe1b9d
+      template: 'WSN Sanity Status 0804'
+      name: 'WSN Sanity Status 0804'
+      groups:
+        -
+          name: 'Wild Sage Nodes'
+      items:
+        -
+          uuid: 17c223bf77bb4c5d8f4d9f84da107b4c
+          name: agent-present
+          type: DEPENDENT
+          key: agent-present
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.agent-present")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 830dd81f404f40ffa1b1ab7e5e5ab9c7
+              expression: 'last(/WSN Sanity Status 0804/agent-present)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/agent-present)=0'
+              name: 'agent-present issue'
+              priority: INFO
+        -
+          uuid: 19d960c56e7744bf8ddd9a0a22ae74ad
+          name: agent_conn
+          type: DEPENDENT
+          key: agent_conn
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.agent_conn")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: ed4e5593e74347fe8ec7701cbc7327bd
+              expression: 'last(/WSN Sanity Status 0804/agent_conn)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/agent_conn)=0'
+              name: 'agent_conn issue'
+              priority: INFO
+        -
+          uuid: f9be02526e954780ba203d52314d023b
+          name: core_nvme_emmc
+          type: DEPENDENT
+          key: core_nvme_emmc
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.core_nvme_emmc")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 15005aee6c6c46058ef76296514b0ce6
+              expression: 'last(/WSN Sanity Status 0804/core_nvme_emmc)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/core_nvme_emmc)=0'
+              name: 'core_nvme_emmc issue'
+              priority: INFO
+        -
+          uuid: c8344f8babe641e4a936cabc71c692cb
+          name: core_rpi
+          type: DEPENDENT
+          key: core_rpi
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.core_rpi")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 527156a89ea54474a40e07c42ed6a8cb
+              expression: 'last(/WSN Sanity Status 0804/core_rpi)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/core_rpi)=0'
+              name: 'core_rpi issue'
+              priority: INFO
+        -
+          uuid: 5dec84d82dd24e43a2e79d10353aa060
+          name: core_sdcard
+          type: DEPENDENT
+          key: core_sdcard
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.core_sdcard")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 24fd273e37f84aa7a47136157d6a52c5
+              expression: 'last(/WSN Sanity Status 0804/core_sdcard)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/core_sdcard)=0'
+              name: 'core_sdcard issue'
+              priority: INFO
+        -
+          uuid: 9a018db56a1740608431906ab99fd1db
+          name: current_media
+          type: DEPENDENT
+          key: current_media
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.current_media")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: a5769adb301c42529a53eecde16b06de
+              expression: 'last(/WSN Sanity Status 0804/current_media)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/current_media)=0'
+              name: 'current_media issue'
+              priority: INFO
+        -
+          uuid: 9e9b816b37854c5b89a0c6ac54b2fa2f
+          name: docker_active
+          type: DEPENDENT
+          key: docker_active
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.docker_active")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 0a22fd00dad24a5eb5bf602504698565
+              expression: 'last(/WSN Sanity Status 0804/docker_active)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/docker_active)=0'
+              name: 'docker_active issue'
+              priority: INFO
+        -
+          uuid: d738ce0eeea746188440a53675595bb6
+          name: factory_prov
+          type: DEPENDENT
+          key: factory_prov
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.factory_prov")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 7aa0d1eea6ff4964b41d1bb87eb17da9
+              expression: 'last(/WSN Sanity Status 0804/factory_prov)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/factory_prov)=0'
+              name: 'factory_prov issue'
+              priority: INFO
+        -
+          uuid: 12f971a065404d30a060deefef802084
+          name: gps
+          type: DEPENDENT
+          key: gps
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.gps")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: d8e0d9ab585748548b0a02d1476a8b5d
+              expression: 'last(/WSN Sanity Status 0804/gps)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/gps)=0'
+              name: 'gps issue'
+              priority: INFO
+        -
+          uuid: 653f22137da94b87beb4f222c99b57d7
+          name: hanwha_camera
+          type: DEPENDENT
+          key: hanwha_camera
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.check_hanwha_camera")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: d30f207bd6ed4bd6a4fac889080239e1
+              expression: 'last(/WSN Sanity Status 0804/hanwha_camera)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/hanwha_camera)=0'
+              name: 'hanwha_camera issue'
+              priority: INFO
+        -
+          uuid: da42ddf90df84a3990075be64879534f
+          name: internet_conn
+          type: DEPENDENT
+          key: internet_conn
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.internet_conn")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 6264c35a8b694fe48e9b2201c3ae6e38
+              expression: 'last(/WSN Sanity Status 0804/internet_conn)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/internet_conn)=0'
+              name: 'internet_conn issue'
+              priority: INFO
+        -
+          uuid: 35a7296232a14cf28ff7176502aaf9ba
+          name: k3s_active
+          type: DEPENDENT
+          key: k3s_active
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.k3s_active")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: d6aeda895e294701a7723cd247323551
+              expression: 'last(/WSN Sanity Status 0804/k3s_active)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/k3s_active)=0'
+              name: 'K3s is down'
+              priority: HIGH
+        -
+          uuid: 8e2a14591ce14e889630fd53872bec09
+          name: k3s_docker_overlay
+          type: DEPENDENT
+          key: k3s_docker_overlay
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.k3s_docker_overlay")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 6bfbd95ab8b94333a803374f13f0d6cf
+              expression: 'last(/WSN Sanity Status 0804/k3s_docker_overlay)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/k3s_docker_overlay)=0'
+              name: 'k3s_docker_overlay issue'
+              priority: INFO
+        -
+          uuid: 9b5a2fce58474acd8a8f44da87bd1bd4
+          name: kernel_warnings
+          type: DEPENDENT
+          key: kernel_warnings
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.kernel_warnings")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: ba1c5b4abe6b4ce2bb2398f61099b79f
+              expression: 'last(/WSN Sanity Status 0804/kernel_warnings)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/kernel_warnings)=0'
+              name: 'kernel_warnings issue'
+              priority: INFO
+        -
+          uuid: 3217f44f89c94fb1a90cb06d0fe6f769
+          name: lan0_status
+          type: DEPENDENT
+          key: lan0_status
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.lan0_status")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 5c3c321677754a3b8bb058d4f1ccef6b
+              expression: 'last(/WSN Sanity Status 0804/lan0_status)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/lan0_status)=0'
+              name: 'lan0_status issue'
+              priority: INFO
+        -
+          uuid: 0519dfafe2fa4ecebc0002273dc1b204
+          name: modem0_status
+          type: DEPENDENT
+          key: modem0_status
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.modem0_status")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 2c083da0cff44a12a39640297c2e5ad5
+              expression: 'last(/WSN Sanity Status 0804/modem0_status)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/modem0_status)=0'
+              name: 'modem0_status issue'
+              priority: INFO
+        -
+          uuid: 19b0ccaa5a9a4a128c7caaaf1ac09af3
+          name: network_switch
+          type: DEPENDENT
+          key: network_switch
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.network_switch")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: b613752398c949cf88bb10e16e23b2f1
+              expression: 'last(/WSN Sanity Status 0804/network_switch)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/network_switch)=0'
+              name: 'network_switch issue'
+              priority: INFO
+        -
+          uuid: d1741e96990e43319becfc6aa8168d1e
+          name: network_watchdog_active
+          type: DEPENDENT
+          key: network_watchdog_active
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.network_watchdog_active")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 4242d3b6bfa14c9992d595b7d6b389c3
+              expression: 'last(/WSN Sanity Status 0804/network_watchdog_active)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/network_watchdog_active)=0'
+              name: 'network_watchdog_active issue'
+              priority: INFO
+        -
+          uuid: dac048ce8b014579af1efd711c1bac96
+          name: node_id_set
+          type: DEPENDENT
+          key: node_id_set
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.node_id_set")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 60aaf456eebb4202a870f229450f2877
+              expression: 'last(/WSN Sanity Status 0804/node_id_set)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/node_id_set)=0'
+              name: 'node_id_set issue'
+              priority: INFO
+        -
+          uuid: e79260e723784e1a9e5fef1384f8620d
+          name: ntp_dns_resolution
+          type: DEPENDENT
+          key: ntp_dns_resolution
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.ntp_dns_resolution")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 2cdd65e4da3b4a90b35c965e8e68fc30
+              expression: 'last(/WSN Sanity Status 0804/ntp_dns_resolution)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/ntp_dns_resolution)=0'
+              name: 'ntp_dns_resolution issue'
+              priority: INFO
+        -
+          uuid: 99dfb29a851741a38d685f2c79ba809b
+          name: nxagent_k3s
+          type: DEPENDENT
+          key: nxagent_k3s
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.nxagent_k3s")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 55bc2a9ee31d4c3fabe1487e6cb03c09
+              expression: 'last(/WSN Sanity Status 0804/nxagent_k3s)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/nxagent_k3s)=0'
+              name: 'nxagent_k3s is down'
+              priority: HIGH
+        -
+          uuid: 0d338255fe8b48f8bd9945a5a371720d
+          name: nxcore_k3s
+          type: DEPENDENT
+          key: nxcore_k3s
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.nxcore_k3s")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: d4644c5739a9442baa3ffabb2efca45f
+              expression: 'last(/WSN Sanity Status 0804/nxcore_k3s)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/nxcore_k3s)=0'
+              name: 'nxcore_k3s is down'
+              priority: HIGH
+        -
+          uuid: 9faca4f48dbd413db194a1b9a3dcf743
+          name: psu_status
+          type: DEPENDENT
+          key: psu_status
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.psu_status")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 305729ac05204d81b39adb156a17bb24
+              expression: 'last(/WSN Sanity Status 0804/psu_status)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/psu_status)=0'
+              name: 'psu_status issue'
+              priority: INFO
+        -
+          uuid: ed8348256f914f41bb05c2c4d0767229
+          name: reverse_ssh_access
+          type: DEPENDENT
+          key: reverse_ssh_access
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.reverse_ssh_access")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 8facb183fc8348c88065b630b06187ff
+              expression: 'last(/WSN Sanity Status 0804/reverse_ssh_access)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/reverse_ssh_access)=0'
+              name: 'reverse_ssh_access issue'
+              priority: AVERAGE
+        -
+          uuid: d8fd6e5f882e492f9237b359fb7cc0dc
+          name: rpi-present
+          type: DEPENDENT
+          key: rpi-present
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.rpi-present")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 3d567949faf84e089987fd8646c5ddaa
+              expression: 'last(/WSN Sanity Status 0804/rpi-present)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/rpi-present)=0'
+              name: 'rpi-present issue'
+              priority: INFO
+        -
+          uuid: 5d4bb54e16cb47818efb0f154f6ccbf1
+          name: rpi_bme680
+          type: DEPENDENT
+          key: rpi_bme680
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.rpi_bme680")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 07a4ee4b12164b9da9258ccad123326a
+              expression: 'last(/WSN Sanity Status 0804/rpi_bme680)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/rpi_bme680)=0'
+              name: 'rpi_bme680 issue'
+              priority: INFO
+        -
+          uuid: 786f537db24840618aff85f9adc4ad0a
+          name: rpi_conn
+          type: DEPENDENT
+          key: rpi_conn
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.rpi_conn")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: dcea126b9ade4e639d6b7a77f059bc6e
+              expression: 'last(/WSN Sanity Status 0804/rpi_conn)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/rpi_conn)=0'
+              name: 'rpi_conn issue'
+              priority: INFO
+        -
+          uuid: 2d935522ea9245ae90fc0ed7187b8e18
+          name: rpi_k3s
+          type: DEPENDENT
+          key: rpi_k3s
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.rpi_k3s")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 93c378b4561143b5bc6184f42612e1ab
+              expression: 'last(/WSN Sanity Status 0804/rpi_k3s)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/rpi_k3s)=0'
+              name: 'rpi_k3s is down'
+              priority: HIGH
+        -
+          uuid: 35247ffcbba2426087010b53746a4121
+          name: rpi_mic
+          type: DEPENDENT
+          key: rpi_mic
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.rpi_mic")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: b624e11eedb74831b9cf09c71f814911
+              expression: 'last(/WSN Sanity Status 0804/rpi_mic)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/rpi_mic)=0'
+              name: 'rpi_mic issue'
+              priority: INFO
+        -
+          uuid: 64b65e2c55804af79c2327be26c1a077
+          name: rpi_raingauge
+          type: DEPENDENT
+          key: rpi_raingauge
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.rpi_raingauge")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 44d02018a6894350a2794939024bf8a3
+              expression: 'last(/WSN Sanity Status 0804/rpi_raingauge)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/rpi_raingauge)=0'
+              name: 'rpi_raingauge issue'
+              priority: INFO
+        -
+          uuid: f438f7b4d0144026bbf631627ef0d90a
+          name: Sanity
+          type: EXTERNAL
+          key: 'sanity.check.sh[{HOST.NAME}]'
+          delay: 1h
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - '}}\n{'
+                - '}},\n{'
+            -
+              type: STR_REPLACE
+              parameters:
+                - '"meta":{'
+                - ''
+            -
+              type: STR_REPLACE
+              parameters:
+                - '}}'
+                - '}'
+        -
+          uuid: 72795756ff30469398cf09b16fc5b585
+          name: usb_hub
+          type: DEPENDENT
+          key: usb_hub
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.usb_hub")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: eb609fda10de4f96b2e4dceb88c5b692
+              expression: 'last(/WSN Sanity Status 0804/usb_hub)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/usb_hub)=0'
+              name: 'usb_hub issue'
+              priority: INFO
+        -
+          uuid: 44dc7f94a8b74d62ad99593ea6e7f458
+          name: waggle_firewall_active
+          type: DEPENDENT
+          key: waggle_firewall_active
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.waggle_firewall_active")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: cb1abf24777a430fbfac619cc4c1b5a4
+              expression: 'last(/WSN Sanity Status 0804/waggle_firewall_active)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/waggle_firewall_active)=0'
+              name: 'waggle_firewall_active issue'
+              priority: INFO
+        -
+          uuid: 4dffad23e4d74322b218e14c027fdd6a
+          name: waggle_reverse_tunnel_active
+          type: DEPENDENT
+          key: waggle_reverse_tunnel_active
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.waggle_reverse_tunnel_active")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 701bbd33301248e6b4536c2680d1bd51
+              expression: 'last(/WSN Sanity Status 0804/waggle_reverse_tunnel_active)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/waggle_reverse_tunnel_active)=0'
+              name: 'waggle_reverse_tunnel_active issue'
+              priority: INFO
+        -
+          uuid: 28a8074344a641f2b1ca9f3fa658c51f
+          name: wagman_bme280
+          type: DEPENDENT
+          key: wagman_bme280
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wagman_bme280")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: cf9c41060110442bb98885eb6a1662bb
+              expression: 'last(/WSN Sanity Status 0804/wagman_bme280)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wagman_bme280)=0'
+              name: 'wagman_bme280 issue'
+              priority: INFO
+        -
+          uuid: 4cc871e58f6946d5922f061c879a9337
+          name: wagman_eeprom
+          type: DEPENDENT
+          key: wagman_eeprom
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wagman_eeprom")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 6caff712b70748bcbd7602d3fdbdf991
+              expression: 'last(/WSN Sanity Status 0804/wagman_eeprom)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wagman_eeprom)=0'
+              name: 'wagman_eeprom issue'
+              priority: INFO
+        -
+          uuid: 451b24ab6fb248329e88eeec7529a22b
+          name: wagman_leds
+          type: DEPENDENT
+          key: wagman_leds
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wagman_leds")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: efa6fb4de4fc49d885fc0cad26c5c7be
+              expression: 'last(/WSN Sanity Status 0804/wagman_leds)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wagman_leds)=0'
+              name: 'wagman_leds issue'
+              priority: INFO
+        -
+          uuid: d949dd0450704f019d190a0b953c3e5e
+          name: wagman_rtc
+          type: DEPENDENT
+          key: wagman_rtc
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wagman_rtc")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 0bcb09165c994434b367e573de6c452f
+              expression: 'last(/WSN Sanity Status 0804/wagman_rtc)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wagman_rtc)=0'
+              name: 'wagman_rtc issue'
+              priority: INFO
+        -
+          uuid: 584e434270ca4a19a017befc941afa70
+          name: wagman_watchdog_active
+          type: DEPENDENT
+          key: wagman_watchdog_active
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wagman_watchdog_active")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: d1f0096ed4bb4d48b7cbb5fa523ab1f9
+              expression: 'last(/WSN Sanity Status 0804/wagman_watchdog_active)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wagman_watchdog_active)=0'
+              name: 'wagman_watchdog_active issue'
+              priority: INFO
+        -
+          uuid: c0550a6d44fc4318a3bdf22c07910ff5
+          name: wan0_status
+          type: DEPENDENT
+          key: wan0_status
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wan0_status")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: c6515dc8acbb495fab7ad0f82a780c02
+              expression: 'last(/WSN Sanity Status 0804/wan0_status)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wan0_status)=0'
+              name: 'wan0_status issue'
+              priority: INFO
+        -
+          uuid: a4f5e29722da41babb49ee13a6ab5e6c
+          name: wes_audio_server
+          type: DEPENDENT
+          key: wes_audio_server
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wes_audio_server")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 15dc73fa22f54fc79341a9aec97a1cc4
+              expression: 'last(/WSN Sanity Status 0804/wes_audio_server)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wes_audio_server)=0'
+              name: 'wes_audio_server issue'
+              priority: INFO
+        -
+          uuid: 2754170f0eec4ec0b4bea005497a24b6
+          name: wes_data_sharing
+          type: DEPENDENT
+          key: wes_data_sharing
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wes_data_sharing")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 4d926dd9e6754fa89d723941c840348d
+              expression: 'last(/WSN Sanity Status 0804/wes_data_sharing)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wes_data_sharing)=0'
+              name: 'wes_data_sharing issue'
+              priority: INFO
+        -
+          uuid: 56fad19e67a4404d8806fb8636f74028
+          name: wes_metrics_agent
+          type: DEPENDENT
+          key: wes_metrics_agent
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wes_metrics_agent")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: b30ff650d7014dcfbdf50ba8ee52f5f7
+              expression: 'last(/WSN Sanity Status 0804/wes_metrics_agent)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wes_metrics_agent)=0'
+              name: 'wes_metrics_agent issue'
+              priority: INFO
+        -
+          uuid: c40c382e4f854a1db3f34fcb323d8161
+          name: wes_node_exporter
+          type: DEPENDENT
+          key: wes_node_exporter
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wes_node_exporter")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: 16d679d4e99743c9a60c2351a18a1fa1
+              expression: 'last(/WSN Sanity Status 0804/wes_node_exporter)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wes_node_exporter)=0'
+              name: 'wes_node_exporter issue'
+              priority: INFO
+        -
+          uuid: 3047c6829ebf4e54b361679b59bccd75
+          name: wes_rabbitmq
+          type: DEPENDENT
+          key: wes_rabbitmq
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wes_rabbitmq")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: a207472715e644a2b2045b14f8fbbe31
+              expression: 'last(/WSN Sanity Status 0804/wes_rabbitmq)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wes_rabbitmq)=0'
+              name: 'wes_rabbitmq issue'
+              priority: INFO
+        -
+          uuid: 07664b35d6dd48ecae36e0d0e63fe4f9
+          name: wes_upload_agent
+          type: DEPENDENT
+          key: wes_upload_agent
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wes_upload_agent")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: f92907d3a2a64c268c7cb3eef53a64cc
+              expression: 'last(/WSN Sanity Status 0804/wes_upload_agent)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wes_upload_agent)=0'
+              name: 'wes_upload_agent issue'
+              priority: INFO
+        -
+          uuid: 94bc98583cce4c399a972758acf0d6c2
+          name: wifi0_status
+          type: DEPENDENT
+          key: wifi0_status
+          delay: '0'
+          valuemap:
+            name: Sanity
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[?(@.name =~ "sys.sanity_status.wifi0_status")].value.first()'
+          master_item:
+            key: 'sanity.check.sh[{HOST.NAME}]'
+          triggers:
+            -
+              uuid: b3361e5e135148bab886a319cff2a40d
+              expression: 'last(/WSN Sanity Status 0804/wifi0_status)<>0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/WSN Sanity Status 0804/wifi0_status)=0'
+              name: 'wifi0_status issue'
+              priority: INFO
+      valuemaps:
+        -
+          uuid: 2a208110d04c43fe80ef4a56c871932d
+          name: Sanity
+          mappings:
+            -
+              value: '0'
+              newvalue: Ok
+            -
+              value: '1'
+              newvalue: Problem
+  graphs:
+    -
+      uuid: aab994982c4040eb80b1b9c55d5f4d40
+      name: 'NxAgent all temps'
+      graph_items:
+        -
+          color: 00FFFF
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: NxAgent_temp_AO-therm
+        -
+          sortorder: '1'
+          color: BFFF00
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: NxAgent_temp_AUX-therm
+        -
+          sortorder: '2'
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: NxAgent_temp_CPU-therm
+        -
+          sortorder: '3'
+          color: BF00FF
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: NxAgent_temp_thermal-fan-est
+        -
+          sortorder: '4'
+          color: FFFF00
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: NxAgent_temp_GPU-therm
+        -
+          sortorder: '5'
+          color: FF4000
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: NxAgent_temp_NVME-therm
+    -
+      uuid: 87deae48fdff41b282b944d1b03dc40f
+      name: 'NxAgent NVME temp'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: NxAgent_temp_NVME-therm
+    -
+      uuid: 6bdfad69bed746399ce39c3e5c4edd12
+      name: 'NxAgent system loads'
+      graph_items:
+        -
+          color: FF4000
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: nxagent.sys.load1
+        -
+          sortorder: '1'
+          color: FFFF00
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: nxagent.sys.load5
+        -
+          sortorder: '2'
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: nxagent.sys.load15
+    -
+      uuid: 9654c4f58ea147afa93a1b44be8cbf05
+      name: 'NxAgent temps'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: NxAgent_temp_CPU-therm
+        -
+          sortorder: '1'
+          color: FFFF00
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: NxAgent_temp_GPU-therm
+        -
+          sortorder: '2'
+          color: FF4000
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: NxAgent_temp_NVME-therm
+    -
+      uuid: 4fdb67462c56493997a18682d75d4599
+      name: 'NxAgent uptime'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: NxAgent_uptime
+    -
+      uuid: 6d11d38e3dfe43feb157b412aeeaf84b
+      name: 'Nxagent uptime delta'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxAgent template'
+            key: NxAgent_uptime_delta
+    -
+      uuid: 4eaa7c3fb31b421dac0b3449b5db3a43
+      name: 'NxCore all temps'
+      graph_items:
+        -
+          color: 00FFFF
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: NxCore_temp_AO-therm
+        -
+          sortorder: '1'
+          color: BFFF00
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: NxCore_temp_AUX-therm
+        -
+          sortorder: '2'
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: NxCore_temp_CPU-therm
+        -
+          sortorder: '3'
+          color: BF00FF
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: NxCore_temp_thermal-fan-est
+        -
+          sortorder: '4'
+          color: FFFF00
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: NxCore_temp_GPU-therm
+        -
+          sortorder: '5'
+          color: FF4000
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: NxCore_temp_nvme-therm
+    -
+      uuid: c523ee02b9664a03ae103c338bd5464f
+      name: 'NxCore NVME temp'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: NxCore_temp_nvme-therm
+    -
+      uuid: 5b252b8fb24f43f283d5f6c857aced9d
+      name: 'NxCore system loads'
+      graph_items:
+        -
+          color: FF4000
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: nxcore.sys.load1
+        -
+          sortorder: '1'
+          color: FFFF00
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: nxcore.sys.load5
+        -
+          sortorder: '2'
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: nxcore.sys.load15
+    -
+      uuid: 0ff745c6542945ef8149564338903ee6
+      name: 'NxCore temps'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: NxCore_temp_CPU-therm
+        -
+          sortorder: '1'
+          color: FFFF00
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: NxCore_temp_GPU-therm
+        -
+          sortorder: '2'
+          color: FF4000
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: NxCore_temp_nvme-therm
+    -
+      uuid: 3113d95d27634d659ef6a7a520521896
+      name: 'NxCore uptime'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: NxCore_uptime
+    -
+      uuid: 1d8cabce0dcb4a2baddfe11972801c1a
+      name: 'NxCore uptime delta'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN NxCore template'
+            key: NxCore_uptime_delta
+    -
+      uuid: 6c71cf8ac24c4a9eac06c7ed69538e67
+      name: 'PRI2 cpu temp'
+      graph_items:
+        -
+          color: F63100
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN RPI2 template'
+            key: RPI2_CPU_temp
+    -
+      uuid: 1cde9396e8fe4e008f00e5feba009e28
+      name: 'PRI cpu temp'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN RPI template'
+            key: RPI_CPU_temp
+    -
+      uuid: 7b14f433f94c44a796048448a7103dee
+      name: 'RPI2 system loads'
+      graph_items:
+        -
+          color: FF4000
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN RPI2 template'
+            key: RPI2_system_load1
+        -
+          sortorder: '1'
+          color: FFFF00
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN RPI2 template'
+            key: RPI2_system_load5
+        -
+          sortorder: '2'
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN RPI2 template'
+            key: RPI2_system_load15
+    -
+      uuid: 65289df4fd6a46b699d1341c571a0a27
+      name: 'RPI2 uptime'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN RPI2 template'
+            key: RPI2_uptime
+    -
+      uuid: 34ed516a85e24b5482669feca4df00c6
+      name: 'RPI2 uptime delta'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN RPI2 template'
+            key: RPI2_uptime_delta
+    -
+      uuid: 6d258e3a677a4df7a36e2bca67d7237f
+      name: 'RPI system loads'
+      graph_items:
+        -
+          color: FF4000
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN RPI template'
+            key: RPI_system_load1
+        -
+          sortorder: '1'
+          color: FFFF00
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN RPI template'
+            key: RPI_system_load5
+        -
+          sortorder: '2'
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN RPI template'
+            key: RPI_system_load15
+    -
+      uuid: 84083252be1944e29f66ec8ec378e7aa
+      name: 'RPI uptime'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN RPI template'
+            key: RPI_uptime
+    -
+      uuid: c7c1f55d714646aa8f7afc9707841e7c
+      name: 'RPI uptime delta'
+      graph_items:
+        -
+          color: 1A7C11
+          calc_fnc: ALL
+          item:
+            host: '0816 WSN RPI template'
+            key: RPI_uptime_delta
