@@ -16,5 +16,5 @@
 ##fi
 
 printf "[\n";
-curl  -s -H 'Content-Type: application/json' https://data.sagecontinuum.org/api/v1/query -d  '{"start":"-120s","filter":{"host":"'$2'.ws-rpi","vsn":"'$1'"}}';
+curl  -s -H 'Content-Type: application/json' https://data.sagecontinuum.org/api/v1/query -d  '{"start":"-180s","tail":1,"filter":{"host":"'$2'.ws-rpi","vsn":"'$1'"}}';
 printf "]\n";
