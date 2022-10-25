@@ -1,0 +1,281 @@
+zabbix_export:
+  version: '6.0'
+  date: '2022-10-25T20:28:08Z'
+  groups:
+    -
+      uuid: c61c8ba9417c4a1b89d7ee112ba6f29b
+      name: 'Dell Blade Nodes'
+  hosts:
+    -
+      host: V001
+      name: V001
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V002
+      name: V002
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V003
+      name: V003
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V004
+      name: V004
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V005
+      name: V005
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V006
+      name: V006
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V009
+      name: V009
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V010
+      name: V010
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V011
+      name: V011
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V015
+      name: V015
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V025
+      name: V025
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V028
+      name: V028
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V029
+      name: V029
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V030
+      name: V030
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V036
+      name: V036
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V037
+      name: V037
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V038
+      name: V038
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V039
+      name: V039
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V040
+      name: V040
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V041
+      name: V041
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
+    -
+      host: V042
+      name: V042
+      templates:
+        -
+          name: 'Dell Blade template'
+      groups:
+        -
+          name: 'Dell Blade Nodes'
+      interfaces:
+        -
+          interface_ref: if1
+      inventory_mode: DISABLED
